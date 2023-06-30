@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.DAL;
+using RestaurantAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient<OrdersService>();
 
 string connectionString = "Server=.\\SQLExpress;Database=Restaurant;Trusted_Connection=True;TrustServerCertificate=True;";
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
