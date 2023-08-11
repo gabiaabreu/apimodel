@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RestaurantAPI.Domain.DTO;
 using RestaurantAPI.Services;
 
 namespace RestaurantAPI.Controllers
@@ -15,22 +14,22 @@ namespace RestaurantAPI.Controllers
             this.orderService = orderService;
         }
 
-        [HttpPost]
-        public IActionResult Post([FromBody] OrderCreateRequest postModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var returnObj = orderService.Create(postModel);
-                if (!returnObj.Success)
-                    return BadRequest(returnObj.Message);
-                else
-                    return Ok(returnObj);
-            }
-            else
-            {
-                return BadRequest(ModelState);
-            }
+        //[HttpPost]
+        //public IActionResult Post([FromBody] OrderCreateRequest postModel)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var returnObj = orderService.Create(postModel);
+        //        if (!returnObj.Success)
+        //            return BadRequest(returnObj.Message);
+        //        else
+        //            return Ok(returnObj);
+        //    }
+        //    else
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-        }
+        //}
     }
 }

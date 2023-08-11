@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantAPI.DAL;
 
@@ -11,9 +12,11 @@ using RestaurantAPI.DAL;
 namespace RestaurantAPI.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230810131752_Migration02")]
+    partial class Migration02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,27 +35,17 @@ namespace RestaurantAPI.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)")
-                        .HasColumnName("City");
-
-                    b.Property<string>("ClientAddress")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)")
                         .HasColumnName("Address");
 
-                    b.Property<string>("ClientName")
+                    b.Property<string>("City")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("Name");
-
-                    b.Property<int>("ClientStatus")
-                        .HasColumnType("int")
-                        .HasColumnName("Status");
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)")
+                        .HasColumnName("City");
 
                     b.Property<string>("Cpf")
                         .IsRequired()
@@ -65,6 +58,16 @@ namespace RestaurantAPI.DAL.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)")
                         .HasColumnName("Email");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("Name");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("Status");
 
                     b.Property<string>("Uf")
                         .IsRequired()
@@ -94,7 +97,7 @@ namespace RestaurantAPI.DAL.Migrations
                         .HasColumnType("nvarchar(400)")
                         .HasColumnName("Description");
 
-                    b.Property<string>("DishName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)")
@@ -128,13 +131,13 @@ namespace RestaurantAPI.DAL.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("OrderDate");
 
-                    b.Property<int>("OrderStatus")
-                        .HasColumnType("int")
-                        .HasColumnName("Status");
-
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int")
                         .HasColumnName("RestaurantId");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("Status");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18, 2)")
@@ -192,6 +195,11 @@ namespace RestaurantAPI.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Address");
+
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(80)
@@ -209,22 +217,17 @@ namespace RestaurantAPI.DAL.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("ContactName");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("Name");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)")
                         .HasColumnName("PhoneNumber");
-
-                    b.Property<string>("RestaurantAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Address");
-
-                    b.Property<string>("RestaurantName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("Name");
 
                     b.Property<string>("Uf")
                         .IsRequired()

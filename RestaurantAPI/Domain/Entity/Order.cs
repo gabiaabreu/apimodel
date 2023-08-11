@@ -9,13 +9,18 @@ namespace RestaurantAPI.Domain.Entity
         [Key]
         public int Id { get; set; }
         [Required]
-        [StringLength(255)]
-        public string Dish { get; set; }
-        [StringLength(255)]
-        public string Description { get; set; }
+        public int ClientId { get; set; }
         [Required]
-        public double Price { get; set; }
-        public int Status { get; set; }
-        public string? Notes { get; set; }
+        public int RestaurantId { get; set; }
+        [Required]
+        public DateTime OrderDate { get; set; }
+        [Required]
+        public double TotalPrice { get; set; }
+        [Required, Range(1, 5)]
+        public int OrderStatus { get; set; }
+
+        public Client Client { get; set; } = null!;
+        public Restaurant Restaurant { get; set; } = null!;
+        public ICollection<OrderDish> OrderDishes { get; set; } = new List<OrderDish>();
     }
 }
