@@ -1,0 +1,38 @@
+version: '3'
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - MSSQL_SA_PASSWORD=Cpc33UBI
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test:
+        [
+            "CMD",
+            "/opt/mssql-tools/bin/sqlcmd",
+            "-USA",
+            "-PCpc33UBI",
+            "-Q",
+            "select 1",
+         ]
+      interval: 1s
+      retries: 20
+    volumes:
+      - sqlserver:/var/opt/mssql
+  setup:
+    image: mcr.microsoft.com/mssql/server
+    depends_on:
+      - sqlserver
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P 'Cpc33UBI' -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./schema.sql:/schema.sql
+    command: sh -c "/opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P 'Cpc33UBI' -Q 'CREATE DATABASE RestaurantAPI' -d master && /opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P 'Cpc33UBI' -d RestaurantAPI -i /schema.sql"
+
+volumes:
+  sqlserver:
