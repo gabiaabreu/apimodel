@@ -154,7 +154,7 @@ namespace RestaurantAPI.DAL
                     .HasComment("Chave primária (identificador) de cada registro da tabela");
 
                 entity.Property(e => e.ClientName)
-                    .HasColumnName("Name")
+                    .HasColumnName("ClientName")
                     .HasMaxLength(255)
                     .IsRequired();
 
@@ -164,7 +164,7 @@ namespace RestaurantAPI.DAL
                     .IsRequired();
 
                 entity.Property(e => e.ClientAddress)
-                    .HasColumnName("Address")
+                    .HasColumnName("ClientAddress")
                     .HasMaxLength(255)
                     .IsRequired();
 
@@ -184,7 +184,7 @@ namespace RestaurantAPI.DAL
                     .IsRequired();
 
                 entity.Property(e => e.ClientStatus)
-                    .HasColumnName("Status")
+                    .HasColumnName("ClientStatus")
                     .HasColumnType("int")
                     .IsRequired();
 

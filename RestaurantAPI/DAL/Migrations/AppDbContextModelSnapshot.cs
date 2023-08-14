@@ -42,17 +42,17 @@ namespace RestaurantAPI.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)")
-                        .HasColumnName("Address");
+                        .HasColumnName("ClientAddress");
 
                     b.Property<string>("ClientName")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)")
-                        .HasColumnName("Name");
+                        .HasColumnName("ClientName");
 
                     b.Property<int>("ClientStatus")
                         .HasColumnType("int")
-                        .HasColumnName("Status");
+                        .HasColumnName("ClientStatus");
 
                     b.Property<string>("Cpf")
                         .IsRequired()
