@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.DAL;
+using RestaurantAPI.DAL.Repositories;
 using RestaurantAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,9 +12,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<OrdersService>();
+builder.Services.AddScoped<ClientsRepository>();
 
-string connectionString = "Server=.\\SQLExpress;Database=Restaurant;Trusted_Connection=True;TrustServerCertificate=True;";
+builder.Services.AddTransient<OrderService>();
+builder.Services.AddTransient<ClientService>();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 var app = builder.Build();
