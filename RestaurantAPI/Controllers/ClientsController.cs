@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantAPI.Domain.DTO;
 using RestaurantAPI.Services;
+using System.Data;
 
 namespace RestaurantAPI.Controllers
 {
@@ -29,6 +31,28 @@ namespace RestaurantAPI.Controllers
             }
             else
                 return BadRequest(ModelState);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] PageQueryRequest filterRequest)
+        {
+            var returnObj = await _clientService.GetAll(filterRequest);
+
+            if (returnObj.Success)
+                return Ok(returnObj);
+            else
+                return BadRequest(returnObj);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            var returnObj = await _clientService.GetById(id);
+
+            if (returnObj.Success)
+                return Ok(returnObj.ReturnObject);
+            else
+                return NotFound(returnObj);
         }
     }
 }

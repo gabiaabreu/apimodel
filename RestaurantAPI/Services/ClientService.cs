@@ -51,5 +51,37 @@ namespace RestaurantAPI.Services
 
             return new ServiceResponse<ClientResponse>(new ClientResponse(newClient));
         }
+
+        public async Task<ServicePagedResponse<ClientResponse>> GetAll(PageQueryRequest queryRequest)
+        {
+            var list = await _clientsRepository.GetAll(
+                queryRequest.CurrentPage,
+                queryRequest.Quantity
+            );
+
+            var count = await _clientsRepository.GetCount();
+
+            var convertedList = list
+                .Select(supplier => new ClientResponse(supplier));
+
+            return new ServicePagedResponse<ClientResponse>(
+                convertedList,
+                count,
+                queryRequest.CurrentPage,
+                queryRequest.Quantity
+            );
+        }
+
+        public async Task<ServiceResponse<ClientResponse>> GetById(int id)
+        {
+            var client = await _clientsRepository.GetById(id);
+
+            if (client == null)
+                return new ServiceResponse<ClientResponse>("Client not found");
+
+            var clientResponse = new ClientResponse(client);
+
+            return new ServiceResponse<ClientResponse>(clientResponse);
+        }
     }
 }
