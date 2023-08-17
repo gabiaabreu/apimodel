@@ -40,7 +40,7 @@ namespace RestaurantAPI.DAL
                     .IsRequired();
 
                 entity.Property(e => e.OrderStatus)
-                    .HasColumnName("Status")
+                    .HasColumnName("OrderStatus")
                     .HasColumnType("int")
                     .IsRequired();
 
