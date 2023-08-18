@@ -38,5 +38,12 @@ namespace RestaurantAPI.DAL.Base
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
+
+        public async Task<T> Update(T entity)
+        {
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
     }
 }

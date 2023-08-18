@@ -23,11 +23,11 @@ namespace RestaurantAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var returnObj = await _clientService.Create(postModel);
-                if (!returnObj.Success)
-                    return BadRequest(returnObj.Message);
+                var response = await _clientService.Create(postModel);
+                if (!response.Success)
+                    return BadRequest(response.Message);
                 else
-                    return Ok(returnObj);
+                    return Ok(response.ReturnObject);
             }
             else
                 return BadRequest(ModelState);
@@ -36,23 +36,55 @@ namespace RestaurantAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] PageQueryRequest filterRequest)
         {
-            var returnObj = await _clientService.GetAll(filterRequest);
+            var response = await _clientService.GetAll(filterRequest);
 
-            if (returnObj.Success)
-                return Ok(returnObj);
+            if (response.Success)
+                return Ok(response);
             else
-                return BadRequest(returnObj);
+                return BadRequest(response);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var returnObj = await _clientService.GetById(id);
+            var response = await _clientService.GetById(id);
 
-            if (returnObj.Success)
-                return Ok(returnObj.ReturnObject);
+            if (response.Success)
+                return Ok(response.ReturnObject);
             else
-                return NotFound(returnObj);
+                return NotFound(response);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] ClientUpdateRequest putModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _clientService.Update(id, putModel);
+                if (!response.Success)
+                    return NotFound(response.Message);
+                return Ok(response.ReturnObject);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+        }
+
+        [HttpPut("status/{id}")]
+        public async Task<IActionResult> PutStatus(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _clientService.SwitchStatus(id);
+                if (!response.Success)
+                    return NotFound(response.Message);
+                return Ok(response.ReturnObject);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
     }
 }

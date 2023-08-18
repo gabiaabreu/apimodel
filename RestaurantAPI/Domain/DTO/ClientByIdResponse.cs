@@ -2,9 +2,9 @@
 
 namespace RestaurantAPI.Domain.DTO
 {
-    public class ClientResponse
+    public class ClientByIdResponse
     {
-        public ClientResponse(Client client)
+        public ClientByIdResponse(Client client)
         {
             Id = client.Id;
             ClientName = client.ClientName;
@@ -16,7 +16,7 @@ namespace RestaurantAPI.Domain.DTO
             ClientStatus = client.ClientStatus;
         }
 
-        public ClientResponse() { }
+        public ClientByIdResponse() { }
 
         public int Id { get; set; }
         public string ClientName { get; set; } = null!;
@@ -26,5 +26,6 @@ namespace RestaurantAPI.Domain.DTO
         public string Uf { get; set; } = null!;
         public string Cpf { get; set; } = null!;
         public int ClientStatus { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

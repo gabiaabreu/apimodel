@@ -1,4 +1,6 @@
-﻿using RestaurantAPI.DAL;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.IdentityModel.Tokens;
+using RestaurantAPI.DAL;
 using RestaurantAPI.DAL.Repositories;
 using RestaurantAPI.Domain.DTO;
 using RestaurantAPI.Domain.Entity;
@@ -72,16 +74,56 @@ namespace RestaurantAPI.Services
             );
         }
 
-        public async Task<ServiceResponse<ClientResponse>> GetById(int id)
+        public async Task<ServiceResponse<ClientByIdResponse>> GetById(int id)
         {
             var client = await _clientsRepository.GetById(id);
 
             if (client == null)
-                return new ServiceResponse<ClientResponse>("Client not found");
+                return new ServiceResponse<ClientByIdResponse>("Client not found");
 
-            var clientResponse = new ClientResponse(client);
+            var clientResponse = new ClientByIdResponse(client);
 
-            return new ServiceResponse<ClientResponse>(clientResponse);
+            return new ServiceResponse<ClientByIdResponse>(clientResponse);
+        }
+
+        public async Task<ServiceResponse<Client>> Update(int id, ClientUpdateRequest updateRequest)
+        {
+            var client = await _clientsRepository.GetById(id);
+
+            if (client == null)
+                return new ServiceResponse<Client>("Client not found");
+
+            // verificar UF valida
+            // verificar email valido 
+            // verificar email existente
+
+            client.ClientName = updateRequest.ClientName.IsNullOrEmpty() ? client.ClientName : updateRequest.ClientName;
+            client.Email = updateRequest.Email.IsNullOrEmpty() ? client.Email : updateRequest.Email;
+            client.ClientAddress = updateRequest.ClientAddress.IsNullOrEmpty() ? client.ClientAddress : updateRequest.ClientAddress;
+            client.City = updateRequest.City.IsNullOrEmpty() ? client.City : updateRequest.City;
+            client.Uf = updateRequest.Uf.IsNullOrEmpty() ? client.Uf : updateRequest.Uf;
+            client.Cpf = updateRequest.Cpf.IsNullOrEmpty() ? client.Cpf : updateRequest.Cpf;
+
+            await _clientsRepository.Update(client);
+
+            return new ServiceResponse<Client>(client);
+        }
+
+        public async Task<ServiceResponse<Client>> SwitchStatus(int id)
+        {
+            var client = await _clientsRepository.GetById(id);
+
+            if (client == null)
+                return new ServiceResponse<Client>("Client not found");
+
+            if (client.ClientStatus == 1)
+                client.ClientStatus = 2;
+            else if (client.ClientStatus == 2)
+                client.ClientStatus = 1;
+
+            await _clientsRepository.Update(client);
+
+            return new ServiceResponse<Client>(client);
         }
     }
 }
