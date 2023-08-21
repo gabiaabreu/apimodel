@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.DAL;
 using RestaurantAPI.DAL.Repositories;
 using RestaurantAPI.Services;
+using RestaurantAPI.Services.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services.AddScoped<ClientsRepository>();
 
 builder.Services.AddTransient<OrderService>();
 builder.Services.AddTransient<ClientService>();
+builder.Services.AddTransient<Validations>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 

@@ -5,34 +5,32 @@ using RestaurantAPI.DAL.Repositories;
 using RestaurantAPI.Domain.DTO;
 using RestaurantAPI.Domain.Entity;
 using RestaurantAPI.Services.Base;
+using RestaurantAPI.Services.Helpers;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RestaurantAPI.Services
 {
     public class ClientService
     {
         private readonly ClientsRepository _clientsRepository;
+        private readonly Validations _validations;
 
-        public ClientService(ClientsRepository clientsRepository)
+        public ClientService(ClientsRepository clientsRepository, Validations validations)
         {
             _clientsRepository = clientsRepository;
+            _validations = validations;
         }
 
         public async Task<ServiceResponse<ClientResponse>> Create(ClientCreateRequest model)
         {
-            //if (model.Uf isnt valid)
-            //{
-            //    return new ServiceResponse<Client>("Preencha uma UF válida");
-            //}
+            if (!_validations.IsValidUF(model.Uf))
+                return new ServiceResponse<ClientResponse>("Fill with valid UF");
 
-            //if (model.Cpf isnt valid)
-            //{
-            //    return new ServiceResponse<Client>("Preencha um CPF válido");
-            //}
+            if (!_validations.IsValidCPF(model.Cpf))
+                return new ServiceResponse<ClientResponse>("Fill with valid CPF");
 
-            //if (model.Email isnt valid)
-            //{
-            //    return new ServiceResponse<Client>("Preencha um e-mail válido, como example@mail.com");
-            //}
+            if (!_validations.IsValidEmail(model.Email))
+                return new ServiceResponse<ClientResponse>("Fill with valid email. Example: myemail@mail.com");
 
             // email duplicado
 
@@ -93,8 +91,12 @@ namespace RestaurantAPI.Services
             if (client == null)
                 return new ServiceResponse<Client>("Client not found");
 
-            // verificar UF valida
-            // verificar email valido 
+            if (!updateRequest.Uf.IsNullOrEmpty() && !_validations.IsValidUF(updateRequest.Uf!))
+                return new ServiceResponse<Client>("Fill with valid UF");
+
+            if (!updateRequest.Email.IsNullOrEmpty() && !_validations.IsValidEmail(updateRequest.Email!))
+                return new ServiceResponse<Client>("Fill with valid email. Example: myemail@mail.com");
+
             // verificar email existente
 
             client.ClientName = updateRequest.ClientName.IsNullOrEmpty() ? client.ClientName : updateRequest.ClientName;
