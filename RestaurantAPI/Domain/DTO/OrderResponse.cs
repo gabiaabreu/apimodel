@@ -7,18 +7,18 @@ namespace RestaurantAPI.Domain.DTO
         public OrderResponse(Order order)
         {
             Id = order.Id;
-            Dish = order.Dish;
-            Description = order.Description;
-            Price = order.Price;
-            Status = order.Status;
-            Notes = order.Notes;
+            RestaurantId = order.RestaurantId;
+            OrderDate = order.OrderDate;
+            TotalPrice = order.TotalPrice;
+            OrderStatus = order.OrderStatus;
         }
 
+        public OrderResponse() { }
+
         public int Id { get; set; }
-        public string Dish { get; set; }
-        public string Description { get; set; }
-        public double Price { get; set; }
-        public int Status { get; set; }
-        public string? Notes { get; set; }
+        public int RestaurantId { get; set; }
+        public DateTime OrderDate { get; set; }
+        public double TotalPrice { get; set; }
+        public int OrderStatus { get; set; }
     }
 }

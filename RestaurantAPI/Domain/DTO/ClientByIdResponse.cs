@@ -14,6 +14,7 @@ namespace RestaurantAPI.Domain.DTO
             Uf = client.Uf;
             Cpf = client.Cpf;
             ClientStatus = client.ClientStatus;
+            Orders = client.Orders.Select(order => new OrderResponse(order)).ToList();
         }
 
         public ClientByIdResponse() { }
@@ -26,6 +27,6 @@ namespace RestaurantAPI.Domain.DTO
         public string Uf { get; set; } = null!;
         public string Cpf { get; set; } = null!;
         public int ClientStatus { get; set; }
-        public List<Order> Orders { get; set; }
+        public List<OrderResponse> Orders { get; set; }
     }
 }
