@@ -86,7 +86,9 @@ CREATE TABLE Orders (
    RestaurantId INT NOT NULL,
    OrderDate DATETIME NOT NULL,
    TotalPrice DECIMAL(18, 2) NOT NULL,
-   OrderStatus INT NOT NULL
+   OrderStatus INT NOT NULL,
+   FOREIGN KEY (ClientId) REFERENCES Clients(Id),
+   FOREIGN KEY (RestaurantId) REFERENCES Restaurants(Id)
 );
 
 -- Inserção de dados na tabela Orders
@@ -118,7 +120,9 @@ CREATE TABLE OrderDishes (
    Id INT PRIMARY KEY IDENTITY(1,1),
    OrderId INT NOT NULL,
    DishId INT NOT NULL,
-   Quantity INT NOT NULL
+   Quantity INT NOT NULL,
+   FOREIGN KEY (OrderId) REFERENCES Orders(Id),
+   FOREIGN KEY (DishId) REFERENCES Dishes(Id)
 );
 
 -- Inserção de dados na tabela OrderDishes
