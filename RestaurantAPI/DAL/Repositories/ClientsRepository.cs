@@ -18,5 +18,19 @@ namespace RestaurantAPI.DAL.Repositories
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<bool> ExistsByEmail(string email)
+        {
+            bool emailExists = await _dbContext.Clients.AnyAsync(c => c.Email == email);
+
+            return emailExists;
+        }
+
+        public async Task<bool> ExistsByCpf(string cpf)
+        {
+            bool cpfExists = await _dbContext.Clients.AnyAsync(c => c.Cpf == cpf);
+
+            return cpfExists;
+        }
     }
 }

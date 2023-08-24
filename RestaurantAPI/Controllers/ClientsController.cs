@@ -62,12 +62,12 @@ namespace RestaurantAPI.Controllers
             {
                 var response = await _clientService.Update(id, putModel);
                 if (!response.Success)
-                    return NotFound(response.Message);
+                    return BadRequest(response.Message);
                 return Ok(response.ReturnObject);
             }
             else
             {
-                return BadRequest(ModelState);
+                return NotFound(ModelState);
             }
         }
 

@@ -32,9 +32,11 @@ namespace RestaurantAPI.Services
             if (!_validations.IsValidEmail(model.Email))
                 return new ServiceResponse<ClientResponse>("Fill with valid email. Example: myemail@mail.com");
 
-            // email duplicado
+            if(await ExistsByEmail(model.Email))
+                return new ServiceResponse<ClientResponse>("Email is already in use");
 
-            // cpf duplicado
+            if (await ExistsByCpf(model.Cpf))
+                return new ServiceResponse<ClientResponse>("CPF is already in use");
 
             var newClient = new Client()
             {
@@ -97,14 +99,15 @@ namespace RestaurantAPI.Services
             if (!updateRequest.Email.IsNullOrEmpty() && !_validations.IsValidEmail(updateRequest.Email!))
                 return new ServiceResponse<Client>("Fill with valid email. Example: myemail@mail.com");
 
-            // verificar email existente
+            if (!updateRequest.Email.IsNullOrEmpty() && await ExistsByEmail(updateRequest.Email!))
+                return new ServiceResponse<Client>("Email is already in use");
 
-            client.ClientName = updateRequest.ClientName.IsNullOrEmpty() ? client.ClientName : updateRequest.ClientName;
-            client.Email = updateRequest.Email.IsNullOrEmpty() ? client.Email : updateRequest.Email;
-            client.ClientAddress = updateRequest.ClientAddress.IsNullOrEmpty() ? client.ClientAddress : updateRequest.ClientAddress;
-            client.City = updateRequest.City.IsNullOrEmpty() ? client.City : updateRequest.City;
-            client.Uf = updateRequest.Uf.IsNullOrEmpty() ? client.Uf : updateRequest.Uf;
-            client.Cpf = updateRequest.Cpf.IsNullOrEmpty() ? client.Cpf : updateRequest.Cpf;
+            client.ClientName = updateRequest.ClientName.IsNullOrEmpty() ? client.ClientName : updateRequest.ClientName!;
+            client.Email = updateRequest.Email.IsNullOrEmpty() ? client.Email : updateRequest.Email!;
+            client.ClientAddress = updateRequest.ClientAddress.IsNullOrEmpty() ? client.ClientAddress : updateRequest.ClientAddress!;
+            client.City = updateRequest.City.IsNullOrEmpty() ? client.City : updateRequest.City!;
+            client.Uf = updateRequest.Uf.IsNullOrEmpty() ? client.Uf : updateRequest.Uf!;
+            client.Cpf = updateRequest.Cpf.IsNullOrEmpty() ? client.Cpf : updateRequest.Cpf!;
 
             await _clientsRepository.Update(client);
 
@@ -126,6 +129,20 @@ namespace RestaurantAPI.Services
             await _clientsRepository.Update(client);
 
             return new ServiceResponse<Client>(client);
+        }
+
+        public async Task<bool> ExistsByEmail(string value)
+        {
+            bool emailExists = await _clientsRepository.ExistsByEmail(value);
+
+            return emailExists;
+        }
+
+        public async Task<bool> ExistsByCpf(string value)
+        {
+            bool cpfExists = await _clientsRepository.ExistsByCpf(value);
+
+            return cpfExists;
         }
     }
 }
